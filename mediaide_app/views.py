@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate
 from django.forms.models import model_to_dict
 from django.utils import timezone
 from rest_framework import serializers
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 
 
 from django.http.response import HttpResponse
