@@ -235,3 +235,22 @@ class UserDocumentView(viewsets.ModelViewSet):
     queryset = UserDocuments.objects.all()
     serializer_class = UserDocumentsSerializer
     permission_classes = (IsAuthenticatedOrReadOnly,)
+
+import xlrd
+def upload_data(request):
+    # ExcelFileName = 'treatments_info.xlsx'
+    ExcelFileName = 'countries.xls'
+    workbook = xlrd.open_workbook(ExcelFileName)
+    worksheet = workbook.sheet_by_name("Sheet1")
+    num_rows = worksheet.nrows
+    num_cols = worksheet.ncols
+    for curr_row in range(0, num_rows, 1):
+        row_data = []
+
+        for curr_col in range(0, num_cols, 1):
+            data = worksheet.cell_value(curr_row, curr_col)  # Read the data in the current cell
+            row_data.append(data)
+        # MedicalPackages.objects.create(name_of_treatment=row_data[1],no_of_days_in_hospital=row_data[2],no_of_days_out_hospital=row_data[3],approximate_cost=row_data[4])
+
+        Country.objects.create(name=row_data[1])
+

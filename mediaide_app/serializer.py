@@ -45,7 +45,13 @@ class CustomUserSerializer(serializers.ModelSerializer):
 class UserDocumentsSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserDocuments
-        fields = ('user', 'description', 'document')
+        fields = ('user', 'name','description', 'document')
+
+    def to_representation(self, value):
+        response = dict(super(UserDocumentsSerializer, self).to_representation(value))
+        response['document'] = "{}{}".format('api', value.document.url)
+        print response['document']
+        return response
 
 
 class CountryVisaSerializer(serializers.ModelSerializer):
@@ -74,6 +80,7 @@ class UserEnquirySerializer(serializers.ModelSerializer):
     def create(self, validate_data):
         user_enquiry = super(UserEnquirySerializer, self).create(validate_data)
         return user_enquiry
+
 
 
 class ContactUsSerializer(serializers.ModelSerializer):

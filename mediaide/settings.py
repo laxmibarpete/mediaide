@@ -33,6 +33,10 @@ ALLOWED_HOSTS = []
 #Use Custom User Model
 AUTH_USER_MODEL = 'mediaide_app.CustomUser'
 
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -186,20 +190,9 @@ EMAIL_HOST_PASSWORD = 'oracle005@'
 EMAIL_PORT = 587
 
 # REDIS related settings
-# REDIS_HOST = 'localhost'
-# REDIS_PORT = '6379'
-# BROKER_URL = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'
-# BROKER_TRANSPORT_OPTIONS = {'region': 'us-east-1',}
-# CELERY_RESULT_BACKEND = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'
+REDIS_HOST = 'localhost'
+REDIS_PORT = '6379'
+BROKER_URL = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'
+BROKER_TRANSPORT_OPTIONS = {'region': 'us-east-1',}
+CELERY_RESULT_BACKEND = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'
 
-BROKER_TRANSPORT = 'sqs'
-BROKER_TRANSPORT_OPTIONS = {
-    'region': 'us-east-1',
-}
-BROKER_USER = 'AKIAJNDYPL7GNLCMMX7A'
-BROKER_PASSWORD = 'CKpMIfsnpR+xOZLY1Hai57ly+O28T/smxvUIutKU'
-
-# CORS_ORIGIN_WHITELIST = (
-#     'mediaide.in',
-#     'www.mediaide.in'
-# )
