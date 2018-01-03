@@ -42,6 +42,7 @@ class Logout(APIView):
 
 
 #TODO UserName Must Be Unique
+@permission_classes([AllowAny])
 def confirm(request,confirmation_code, id):
 
     user = CustomUser.objects.get(id=int(id))
@@ -55,7 +56,7 @@ def confirm(request,confirmation_code, id):
 
 
 class ResendMes(APIView):
-
+    permission_classes = (AllowAny,)
     def post(self,request,format=None):
         email = request.data.get('email')
         user = CustomUser.objects.get(email=email)
@@ -71,6 +72,8 @@ class ResendMes(APIView):
 
 
 @api_view(['POST'])
+@permission_classes([AllowAny,])
+
 def forget_password(request):
     email = request.data.get('email',None)
     user_object = CustomUser.objects.filter(email=email)
@@ -89,6 +92,7 @@ def forget_password(request):
         raise serializers.ValidationError('email not found')
 
 
+@permission_classes([AllowAny,])
 def reset_password(request):
     token = request.data.get('token',None)
     id = request.data.get('id',None)
@@ -119,6 +123,8 @@ class CustomUserView(viewsets.ModelViewSet):
 class UserEnquiryView(viewsets.ModelViewSet):
     queryset = UserEnquiry.objects.all()
     serializer_class = UserEnquirySerializer
+    permission_classes = (IsAuthenticatedOrReadOnly,)
+
 
     def create(self, request, *args, **kwargs):
         super(UserEnquiryView,self).create(request, args, kwargs)
@@ -128,6 +134,7 @@ class UserEnquiryView(viewsets.ModelViewSet):
 class ContactUsView(viewsets.ModelViewSet):
     queryset = ContactUs.objects.all()
     serializer_class = ContactUsSerializer
+    permission_classes = (AllowAny,)
 
     def create(self, request, *args, **kwargs):
         super(ContactUsView,self).create(request, args, kwargs)
@@ -137,19 +144,23 @@ class ContactUsView(viewsets.ModelViewSet):
 class CountryVisaView(viewsets.ModelViewSet):
     queryset = CountriesVisa.objects.all()
     serializer_class = CountryVisaSerializer
+    permission_classes = (AllowAny,)
 
 
 
 class MedicalPackagesView(viewsets.ModelViewSet):
     queryset = MedicalPackages.objects.all()
     serializer_class = MedicalPackagesSerializer
+    permission_classes = (AllowAny,)
 
 
 class FacilitiesView(viewsets.ModelViewSet):
     queryset = Facilities.objects.all()
     serializer_class = FacilitiesSerializer
+    permission_classes = (AllowAny,)
 
 @api_view(['POST'])
+@permission_classes([AllowAny,])
 def user_login( request):
 
     email = request.data.get('email',)
@@ -157,7 +168,7 @@ def user_login( request):
 
     user = authenticate(email=email, password=password)
 
-    if not user.is_active:
+    if user and not user.is_active:
         raise serializers.ValidationError(' please verify email ')
 
     if user and user.is_active:
@@ -170,6 +181,8 @@ def user_login( request):
 
 
 @api_view(['GET','POST'])
+@permission_classes([AllowAny,])
+
 def get_estimate_data(request):
 
     def validated_treatment(treatment):
@@ -221,3 +234,4 @@ def get_estimate_data(request):
 class UserDocumentView(viewsets.ModelViewSet):
     queryset = UserDocuments.objects.all()
     serializer_class = UserDocumentsSerializer
+    permission_classes = (IsAuthenticatedOrReadOnly,)
